@@ -4,7 +4,7 @@ Projeto para a disciplina de Sistemas Distribuídos
 ## Patterns
 
 ### Basic Remoting 
-- [ ] Server Request Handler
+- [x] Server Request Handler (Ewerton)
 - [ ] Client Request Handler
 - [ ] Remotin Error
 - [ ] Invoker
