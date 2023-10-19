@@ -2,6 +2,7 @@
 // then press Enter. You can now see whitespace characters in your code.
 package middleware;
 
+import middleware.basic_remoting.ServerRequestHandler;
 import middleware.identification.annotations.*;
 
 import java.lang.reflect.Method;
@@ -21,69 +22,10 @@ public class Middleware {
     }
 
     public void start(int serverPort) {
-        System.out.println("Middleware inciado na porta: " + serverPort);
-
-        try {
-            ServerSocket serverSocket = new ServerSocket(serverPort);
-            System.out.println("Servidor Middleware em execução na porta " + serverPort);
-
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Nova conexão de cliente recebida.");
-
-                // Crie fluxos de entrada e saída para comunicação com o cliente
-                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-
-                // Leitura do objeto serializado do cliente
-                Object clientRequest = in.readObject();
-                System.out.println("Requisicao recebida.");
-
-                // Processar a solicitação recebida do cliente
-                try {
-                    //JSONParser parser = new JSONParser();
-                    //JSONObject jsonRequest = (JSONObject) parser.parse(clientRequest);
-                    JSONObject jsonRequest = new JSONObject(clientRequest.toString());
-                    //JSONObject jsonRequest = (JSONObject) clientRequest;
-                    System.out.println(jsonRequest.toString());
-                    String methodName = jsonRequest.getString("router");
-
-                    if ("/calc/add".equals(methodName)) {
-                        int var1 = jsonRequest.getInt("var1");
-                        int var2 = jsonRequest.getInt("var2");
-
-                        int result = var1 + var2;
-
-                        // Preparar a resposta
-                        JSONObject jsonResponse = new JSONObject();
-                        jsonResponse.put("result", result);
-
-                        out.writeObject(jsonResponse.toString());
-                    } else if ("/calc/sub".equals(methodName)) {
-                        int var1 = jsonRequest.getInt("var1");
-                        int var2 = jsonRequest.getInt("var2");
-
-                        int result = var1 - var2;
-
-                        // Preparar a resposta
-                        JSONObject jsonResponse = new JSONObject();
-                        jsonResponse.put("result", result);
-
-                        out.writeObject(jsonResponse.toString());
-                    } else {
-                        System.out.println("Método não reconhecido: " + methodName);
-                    }
-                } catch (ClassCastException e) {
-                    System.out.println("Erro ao processar a solicitação do cliente: " + e.getMessage());
-                }
-
-                // Feche a conexão com o cliente
-                clientSocket.close();
-                System.out.println("Solicitacao finalizada.");
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        
+        ServerRequestHandler serverRequestHandler = new ServerRequestHandler(serverPort);
+        serverRequestHandler.main(null);
+        
     }
 
     public Socket connect(String serverAddress, int serverPort) {
