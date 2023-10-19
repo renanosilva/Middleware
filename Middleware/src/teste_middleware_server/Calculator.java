@@ -1,12 +1,14 @@
 package teste_middleware_server;
 
 import middleware.identification.annotations.Get;
+
 import middleware.identification.annotations.Post;
 import middleware.identification.annotations.RequestMap;
 import org.json.JSONObject;
+import java.io.Serializable;
 
 @RequestMap(router = "/calc")
-public class Calculator {
+public class Calculator implements Serializable {
 
     @Get(router = "/add")
     public JSONObject add(JSONObject jsonObject) throws Throwable {

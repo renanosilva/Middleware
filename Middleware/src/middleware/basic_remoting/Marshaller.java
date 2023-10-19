@@ -1,5 +1,11 @@
 package middleware.basic_remoting;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
+
 public class Marshaller {
     public static byte[] marshal(Serializable object) {
         try {
